@@ -1,0 +1,857 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #07090F;
+  --color-ink-soft: #0D1120;
+  --color-paper: #F5F3ED;
+  --color-violet: #7C5CFF;
+  --color-violet-soft: #A48CFF;
+  --color-teal: #2DD4BF;
+  --color-slate: #8A8F9C;
+  --color-slate-dim: #565C6B;
+  --color-line: #1A1F2E;
+
+  --font-display: "Sora", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: var(--color-violet);
+  color: var(--color-ink);
+}
+
+/* ============================================
+   REDUCE MOTION RESPECT
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible keyboard focus */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ============================================
+   ANIMATED STARFIELD BACKGROUND
+   ============================================ */
+.starfield {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: twinkle var(--dur, 4s) ease-in-out infinite var(--del, 0s);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: var(--min-op, 0.05); transform: scale(1); }
+  50% { opacity: var(--max-op, 0.4); transform: scale(1.4); }
+}
+
+/* ============================================
+   CLI TICKER
+   ============================================ */
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.ticker-track {
+  animation: ticker-scroll 28s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
+}
+
+/* ============================================
+   GRID TEXTURE HERO
+   ============================================ */
+.grid-texture {
+  background-image:
+    linear-gradient(to right, rgba(30,35,48,0.6) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(30,35,48,0.6) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* ============================================
+   BLINKING CURSOR
+   ============================================ */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* ============================================
+   FLOATING BADGES
+   ============================================ */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  33% { transform: translateY(-10px) translateX(5px); }
+  66% { transform: translateY(-4px) translateX(-3px); }
+}
+.float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+@keyframes float-slower {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+}
+.float-slower {
+  animation: float-slower 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float-slow, .float-slower { animation: none; }
+}
+
+/* ============================================
+   PULSE DOT (available status)
+   ============================================ */
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(45, 212, 191, 0); }
+}
+.pulse-dot {
+  animation: pulse-dot 2.4s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pulse-dot { animation: none; }
+}
+
+/* ============================================
+   NEON GLOW BUTTON
+   ============================================ */
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+.btn-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+.btn-glow:hover::before {
+  transform: translateX(100%);
+}
+
+.btn-glow-border {
+  position: relative;
+}
+.btn-glow-border::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--color-violet), var(--color-teal), var(--color-violet));
+  background-size: 200% 200%;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: gradient-shift 3s ease infinite;
+}
+.btn-glow-border:hover::after {
+  opacity: 1;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ============================================
+   ANIMATED GRADIENT TEXT
+   ============================================ */
+.gradient-text-animated {
+  background: linear-gradient(
+    135deg,
+    var(--color-violet) 0%,
+    var(--color-violet-soft) 25%,
+    var(--color-teal) 50%,
+    var(--color-violet-soft) 75%,
+    var(--color-violet) 100%
+  );
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-flow 5s ease infinite;
+}
+
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ============================================
+   GLITCH EFFECT (name hover)
+   ============================================ */
+@keyframes glitch-1 {
+  0%, 95%, 100% { clip-path: none; transform: none; }
+  96% { clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); transform: translateX(-4px); }
+  97% { clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%); transform: translateX(4px); }
+  98% { clip-path: polygon(0 10%, 100% 10%, 100% 30%, 0 30%); transform: translateX(-2px); }
+}
+
+.glitch-hover {
+  position: relative;
+}
+
+/* ============================================
+   SKILL PROGRESS BAR ANIMATION
+   ============================================ */
+@keyframes progress-fill {
+  from { width: 0%; }
+  to { width: var(--target-width); }
+}
+
+.skill-bar {
+  width: 0%;
+  animation: progress-fill 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ============================================
+   CARD HOVER GLOW
+   ============================================ */
+.card-glow {
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-glow:hover {
+  box-shadow: 0 0 30px rgba(124, 92, 255, 0.15), 0 0 60px rgba(124, 92, 255, 0.05);
+  transform: translateY(-4px);
+}
+
+.card-glow-teal:hover {
+  box-shadow: 0 0 30px rgba(45, 212, 191, 0.15), 0 0 60px rgba(45, 212, 191, 0.05);
+}
+
+/* ============================================
+   SCANNING LINE EFFECT
+   ============================================ */
+@keyframes scan-line {
+  0% { top: -2%; opacity: 0.4; }
+  50% { opacity: 0.8; }
+  100% { top: 102%; opacity: 0.4; }
+}
+
+.scan-effect {
+  position: relative;
+  overflow: hidden;
+}
+.scan-effect::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-teal), transparent);
+  animation: scan-line 4s linear infinite;
+  pointer-events: none;
+}
+
+/* ============================================
+   ORBIT RING ANIMATION
+   ============================================ */
+@keyframes orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes orbit-reverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.orbit-ring {
+  animation: orbit 20s linear infinite;
+}
+
+.orbit-ring-reverse {
+  animation: orbit-reverse 15s linear infinite;
+}
+
+/* ============================================
+   AURORA BACKGROUND
+   ============================================ */
+@keyframes aurora-1 {
+  0%, 100% { transform: translate(-30%, -30%) rotate(0deg) scale(1); }
+  33% { transform: translate(-20%, -40%) rotate(120deg) scale(1.2); }
+  66% { transform: translate(-40%, -20%) rotate(240deg) scale(0.9); }
+}
+
+@keyframes aurora-2 {
+  0%, 100% { transform: translate(30%, 30%) rotate(0deg) scale(1.1); }
+  33% { transform: translate(40%, 20%) rotate(-120deg) scale(0.9); }
+  66% { transform: translate(20%, 40%) rotate(-240deg) scale(1.3); }
+}
+
+@keyframes aurora-3 {
+  0%, 100% { transform: translate(0%, 0%) scale(1); }
+  50% { transform: translate(10%, -10%) scale(1.15); }
+}
+
+.aurora-1 {
+  animation: aurora-1 18s ease-in-out infinite;
+}
+.aurora-2 {
+  animation: aurora-2 22s ease-in-out infinite;
+}
+.aurora-3 {
+  animation: aurora-3 14s ease-in-out infinite;
+}
+
+/* ============================================
+   TYPEWRITER
+   ============================================ */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* ============================================
+   MORPHING BORDER
+   ============================================ */
+@keyframes morph-border {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50% { border-radius: 50% 50% 20% 80% / 25% 80% 20% 75%; }
+  75% { border-radius: 67% 33% 47% 53% / 37% 20% 80% 63%; }
+}
+
+.morph-blob {
+  animation: morph-border 12s ease-in-out infinite;
+}
+
+/* ============================================
+   PARTICLE FLOAT
+   ============================================ */
+@keyframes particle-float {
+  0% { transform: translateY(100vh) scale(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+
+/* ============================================
+   SECTION REVEAL LINE
+   ============================================ */
+@keyframes line-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.line-grow {
+  transform-origin: left;
+  animation: line-grow 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ============================================
+   NEON BORDER PULSE
+   ============================================ */
+@keyframes neon-pulse {
+  0%, 100% { box-shadow: 0 0 5px rgba(124, 92, 255, 0.3), inset 0 0 5px rgba(124, 92, 255, 0.1); }
+  50% { box-shadow: 0 0 20px rgba(124, 92, 255, 0.6), 0 0 40px rgba(124, 92, 255, 0.2), inset 0 0 10px rgba(124, 92, 255, 0.1); }
+}
+
+.neon-pulse {
+  animation: neon-pulse 2.5s ease-in-out infinite;
+}
+
+/* ============================================
+   SKILLS TAB (was broken — now fixed)
+   ============================================ */
+#skills {
+  scroll-margin-top: 80px;
+}
+
+/* ============================================
+   SCROLL INDICATOR
+   ============================================ */
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(8px); opacity: 0.4; }
+}
+.scroll-bounce {
+  animation: scroll-bounce 1.8s ease-in-out infinite;
+}
+
+/* ============================================
+   SHIMMER LOADING
+   ============================================ */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg,
+    var(--color-line) 25%,
+    rgba(124, 92, 255, 0.1) 50%,
+    var(--color-line) 75%
+  );
+  background-size: 200% auto;
+  animation: shimmer 2s linear infinite;
+}
+
+/* ============================================
+   COUNTER FLIP ANIMATION
+   ============================================ */
+@keyframes number-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); color: var(--color-teal); }
+  100% { transform: scale(1); }
+}
+
+.counter-pop {
+  animation: number-pop 0.3s ease-out;
+}
+
+/* ============================================
+   MAGNETIC HOVER EFFECT  
+   ============================================ */
+.magnetic {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   GLASS MORPHISM
+   ============================================ */
+.glass {
+  background: rgba(13, 17, 32, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-violet {
+  background: rgba(124, 92, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(124, 92, 255, 0.2);
+}
+
+/* ============================================
+   TEXT REVEAL MASK
+   ============================================ */
+@keyframes text-reveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0% 0 0); }
+}
+
+.text-reveal {
+  animation: text-reveal 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+/* ============================================
+   ROTATING GRADIENT BORDER
+   ============================================ */
+@keyframes rotate-gradient {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.rotating-border {
+  position: relative;
+  isolation: isolate;
+}
+
+.rotating-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    var(--color-violet),
+    var(--color-teal),
+    var(--color-violet-soft),
+    var(--color-teal),
+    var(--color-violet)
+  );
+  z-index: -1;
+  animation: rotate-gradient 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.rotating-border:hover::before {
+  opacity: 1;
+}
+
+/* ============================================
+   WAVY TEXT ANIMATION
+   ============================================ */
+@keyframes wave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ============================================
+   CONFETTI / SPARK BURST
+   ============================================ */
+@keyframes spark {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+}
+
+/* ============================================
+   PAGE TRANSITION
+   ============================================ */
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-in {
+  animation: page-in 0.5s cubic-bezier(0.21, 0.47, 0.32, 0.98) forwards;
+}
+
+/* ============================================
+   NEON UNDERLINE
+   ============================================ */
+.neon-underline {
+  position: relative;
+}
+.neon-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-violet), var(--color-teal));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+  box-shadow: 0 0 8px rgba(124, 92, 255, 0.6);
+}
+.neon-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* ============================================
+   HERO PHOTO GLOW
+   ============================================ */
+@keyframes photo-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 30px rgba(124, 92, 255, 0.2),
+      0 0 60px rgba(124, 92, 255, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 40px rgba(45, 212, 191, 0.25),
+      0 0 80px rgba(45, 212, 191, 0.1);
+  }
+}
+
+.photo-glow {
+  animation: photo-glow 4s ease-in-out infinite;
+}
+
+/* ============================================
+   STAT CARD SHIMMER
+   ============================================ */
+@keyframes stat-shimmer {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.stat-card:hover {
+  background: linear-gradient(
+    105deg,
+    rgba(13, 17, 32, 0.8) 0%,
+    rgba(124, 92, 255, 0.08) 50%,
+    rgba(13, 17, 32, 0.8) 100%
+  );
+  background-size: 200% auto;
+  animation: stat-shimmer 1.5s ease forwards;
+}
+
+/* ============================================
+   AVAILABLE BADGE PING
+   ============================================ */
+@keyframes ping {
+  0% { transform: scale(1); opacity: 0.8; }
+  75%, 100% { transform: scale(2.2); opacity: 0; }
+}
+
+.ping-ring {
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* ============================================
+   SKILL CARD MAGNETIC HOVER
+   ============================================ */
+.skill-item {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.skill-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.05), rgba(45, 212, 191, 0.05));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.skill-item:hover::before {
+  opacity: 1;
+}
+
+.skill-item:hover {
+  border-color: rgba(124, 92, 255, 0.5) !important;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 20px rgba(124, 92, 255, 0.15);
+}
+
+/* ============================================
+   SERVICES CARD ICON SPIN
+   ============================================ */
+.service-icon {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.group:hover .service-icon {
+  transform: rotate(10deg) scale(1.15);
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--color-violet), var(--color-teal));
+  border-radius: 3px;
+}
+
+/* ============================================
+   SECTION DIVIDER GLOW
+   ============================================ */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-violet) 30%,
+    var(--color-teal) 70%,
+    transparent 100%
+  );
+  opacity: 0.3;
+}
+
+/* ============================================
+   HERO BOTTOM SCROLL HINT
+   ============================================ */
+@keyframes chevron-bounce {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(5px); }
+}
+.chevron-bounce {
+  animation: chevron-bounce 2s ease-in-out infinite;
+}
+
+/* ============================================
+   FLOATING / DRIFTING STARS
+   ============================================ */
+.star-float {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation:
+    star-drift var(--float-dur, 20s) ease-in-out infinite var(--del, 0s),
+    star-twinkle var(--twinkle-dur, 3s) ease-in-out infinite var(--del, 0s);
+}
+
+@keyframes star-drift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(calc(var(--dx, 30px) * 0.4), calc(var(--dy, 20px) * 0.3)); }
+  50%  { transform: translate(var(--dx, 30px), var(--dy, 20px)); }
+  75%  { transform: translate(calc(var(--dx, 30px) * 0.6), calc(var(--dy, 20px) * 0.8)); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: var(--max-op, 0.5); }
+}
+
+/* Shooting stars */
+.star-shoot {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: white;
+  animation: shoot var(--shoot-dur, 6s) ease-in infinite var(--del, 0s);
+  opacity: 0;
+}
+
+.star-shoot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(to left, rgba(255,255,255,0.8), transparent);
+}
+
+@keyframes shoot {
+  0%   { transform: translate(0, 0) rotate(35deg);   opacity: 0; }
+  5%   { opacity: 0.9; }
+  60%  { transform: translate(300px, 180px) rotate(35deg); opacity: 0; }
+  100% { transform: translate(300px, 180px) rotate(35deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .star-float, .star-shoot { animation: none; opacity: 0.1; }
+}
+
+/* ============================================
+   ANIMATED CHARACTER TITLE
+   ============================================ */
+.animated-title-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 48px;
+}
+
+.animated-title-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  overflow: visible;
+}
+
+/* Each character base state */
+.title-char {
+  display: inline-block;
+  color: rgba(245, 243, 237, 0.9);
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  transition: none;
+}
+
+/* Slide-in phase: chars start right, animate to position */
+.title-char-in {
+  animation: char-slide-in 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: var(--char-delay, 0s);
+}
+
+@keyframes char-slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(40px) translateY(6px) scale(0.85);
+    filter: blur(4px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-4px) translateY(0) scale(1.03);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Exit phase: chars shrink and fade */
+.title-char-out {
+  animation: char-shrink-out 0.45s cubic-bezier(0.4, 0, 0.8, 0.6) both;
+  animation-delay: var(--exit-delay, 0s);
+}
+
+@keyframes char-shrink-out {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  40% {
+    opacity: 0.6;
+    transform: translateX(-6px) scale(0.95);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-20px) scale(0.7);
+    filter: blur(2px);
+  }
+}
+
+/* Role indicator dots */
+.title-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.title-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+}
+
+.title-dot:nth-child(1) {
+  transform: scale(1.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title-char-in  { animation: none; opacity: 1; transform: none; }
+  .title-char-out { animation: none; opacity: 0; }
+}
