@@ -17,14 +17,14 @@ function ScrollManager() {
 
   useEffect(() => {
     if (location.hash) {
-      // Wait a tick for the page content to mount before scrolling.
+      // Longer delay on first load so all sections are mounted before scrolling
       const id = setTimeout(() => {
         const el = document.querySelector(location.hash)
         if (el) el.scrollIntoView({ behavior: 'smooth' })
-      }, 50)
+      }, 120)
       return () => clearTimeout(id)
     } else {
-      window.scrollTo({ top: 0 })
+      window.scrollTo({ top: 0, behavior: 'instant' })
     }
   }, [location.pathname, location.hash])
 

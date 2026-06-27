@@ -49,7 +49,11 @@ export function NavBar() {
       navigate('/' + hash)
     } else {
       const el = document.querySelector(hash)
-      if (el) el.scrollIntoView({ behavior: 'smooth' })
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' })
+        // replaceState instead of pushState so back button doesn't step through each section
+        window.history.replaceState(null, '', hash)
+      }
     }
   }
 

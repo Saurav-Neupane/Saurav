@@ -329,7 +329,7 @@ function scrollToContact(e) {
 // ── Hero ──────────────────────────────────────────────────────────────────────
 export function Hero() {
   return (
-    <section id="top" className="relative pt-28 md:pt-36 pb-16 px-6 md:px-10 grid-texture overflow-hidden min-h-screen flex flex-col">
+    <section id="top" className="relative pt-28 md:pt-36 pb-16 px-6 md:px-10 grid-texture overflow-hidden min-h-screen min-h-[100svh] flex flex-col">
       <Starfield />
       <Aurora />
       <div className="absolute inset-0 bg-gradient-to-b from-ink/60 via-ink/80 to-ink pointer-events-none" />

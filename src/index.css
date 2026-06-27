@@ -855,3 +855,66 @@ button:focus-visible {
   .title-char-in  { animation: none; opacity: 1; transform: none; }
   .title-char-out { animation: none; opacity: 0; }
 }
+
+/* ============================================
+   MOBILE FIXES
+   ============================================ */
+
+/* Fix 100vh on mobile (address bar eats space) */
+:root {
+  --app-height: 100%;
+}
+
+/* Use svh (small viewport height) for hero — supported on all modern mobile browsers */
+.min-h-screen {
+  min-height: 100vh;
+  min-height: 100svh; /* mobile safe */
+}
+
+/* Smooth touch scrolling on iOS */
+html {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent horizontal scroll on mobile */
+body {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+/* Fix tap highlight on mobile nav links */
+a, button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent text size adjustment on mobile rotation */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Safe area padding for notched phones (iPhone X+) */
+header {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Fix starfield fixed positioning on mobile (can cause scroll bugs) */
+@media (max-width: 768px) {
+  .starfield {
+    position: absolute;
+    height: 100svh;
+  }
+
+  /* Reduce heavy animations on mobile for performance */
+  .orbit-ring,
+  .orbit-ring-reverse {
+    display: none;
+  }
+
+  /* Ensure animated title doesn't overflow on small screens */
+  .animated-title-inner {
+    font-size: clamp(0.95rem, 4.5vw, 1.3rem);
+  }
+}
